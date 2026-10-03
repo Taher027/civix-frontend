@@ -14,6 +14,7 @@ import {
   FieldSeparator,
 } from "../ui/field";
 import { Input } from "../ui/input";
+import { toast } from "../ui/toast";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +34,18 @@ export default function LoginForm() {
       const response = await loginAction(data);
       console.log(response);
       if (response.success) {
+        toast.add({
+          title: "Login Success",
+          description: "Welcome back",
+          type: "success",
+        });
         router.push("/");
+      } else {
+        toast.add({
+          title: "Login failed",
+          description: response.error || "Something went wrong!",
+          type: "false",
+        });
       }
     },
   });

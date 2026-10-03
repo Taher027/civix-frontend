@@ -18,5 +18,6 @@ export const getMe = async () => {
   if (!res.ok) return false;
 
   const result = await res.json();
-  return result?.data ?? [];
+  console.log(result);
+  return result?.data ?? null;
 };
