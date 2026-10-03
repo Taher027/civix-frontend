@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { getMe } from "@/app/(dashboard)/_Action/getme";
-export type Role = "ADMIN" | "CITIZEN" | "VOLUNTEER";
-export const dashboardRoute: Record<Role, string> = {
+import type { userRole } from "@/types/auth.type";
+
+export const dashboardRoute: Record<userRole, string> = {
   ADMIN: "/admin",
   CITIZEN: "/citizen",
   VOLUNTEER: "/volunteer",
@@ -12,14 +13,14 @@ export default async function RoleGuard({
   allowedRoles,
 }: {
   children: ReactNode;
-  allowedRoles?: Role[];
+  allowedRoles?: userRole[];
 }) {
   const user = await getMe();
   if (!user) {
     redirect("/login");
   }
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    redirect(dashboardRoute[user.role as Role] ?? "/");
+    redirect(dashboardRoute[user.role as userRole] ?? "/");
   }
 
   return <>{children}</>;
