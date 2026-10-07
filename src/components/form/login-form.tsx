@@ -4,6 +4,7 @@ import { Eye, EyeClosed } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
 import { loginAction } from "@/app/(public)/(auth)/_Action/AuthAction";
 import { Button } from "../ui/button";
 import {
@@ -15,6 +16,7 @@ import {
 } from "../ui/field";
 import { Input } from "../ui/input";
 import { toast } from "../ui/toast";
+import { loginSchema } from "@/validation/loginForm.schema";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,9 +27,12 @@ export default function LoginForm() {
       email: "test@gmail.com",
       password: "123456",
     },
+    validators: {
+      onChange: loginSchema,
+    },
     onSubmit: async ({ value }) => {
       const data = {
-        email: value.email,
+        email: value.email.trim(),
         password: value.password,
       };
 
@@ -44,7 +49,7 @@ export default function LoginForm() {
         toast.add({
           title: "Login failed",
           description: response.error || "Something went wrong!",
-          type: "false",
+          type: "error",
         });
       }
     },
@@ -64,8 +69,10 @@ export default function LoginForm() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           form.handleSubmit();
         }}
+        noValidate
       >
         <FieldGroup>
           <form.Field name="email">
@@ -79,10 +86,12 @@ export default function LoginForm() {
                   <Input
                     id={field.name}
                     name={field.name}
+                    type="email"
+                    placeholder="m@example.com"
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
                     value={field.state.value}
-                    autoComplete="off"
+                    autoComplete="email"
                     aria-invalid={isInvalid}
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -104,16 +113,21 @@ export default function LoginForm() {
                       id={field.name}
                       name={field.name}
                       type={showPassword ? "text" : "password"}
+                      placeholder="*********"
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       value={field.state.value}
-                      autoComplete="off"
+                      autoComplete="current-password"
                       aria-invalid={isInvalid}
+                      className="pr-10"
                     />
                     <button
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <EyeClosed className="size-4" />
@@ -128,7 +142,13 @@ export default function LoginForm() {
             }}
           </form.Field>
 
-          <Button type="submit">"Submit"</Button>
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Logging in..." : "Login"}
+              </Button>
+            )}
+          </form.Subscribe>
         </FieldGroup>
       </form>
 

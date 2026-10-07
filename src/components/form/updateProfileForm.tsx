@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
 import { updateProfile } from "@/services/updateProfile";
+import { updateProfileSchema } from "@/validation/updateProfile.schema";
 
 type UserData = {
   name: string;
@@ -31,9 +32,12 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
     city: user.city ?? "",
     address: user.address ?? "",
   };
-  const userRole = user.role.toLocaleLowerCase();
+
   const form = useForm({
     defaultValues,
+    validators: {
+      onChange: updateProfileSchema,
+    },
     onSubmit: async ({ value }) => {
       const result = await updateProfile({
         name: value.name.trim(),
@@ -75,6 +79,7 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
           e.stopPropagation();
           form.handleSubmit();
         }}
+        noValidate
       >
         <FieldGroup>
           {/* Read-only: email */}
@@ -109,13 +114,7 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
             </p>
           </Field>
 
-          <form.Field
-            name="name"
-            validators={{
-              onChange: ({ value }) =>
-                !value.trim() ? { message: "Name is required" } : undefined,
-            }}
-          >
+          <form.Field name="name">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -139,15 +138,7 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
             }}
           </form.Field>
 
-          <form.Field
-            name="phone"
-            validators={{
-              onChange: ({ value }) =>
-                !value.trim()
-                  ? { message: "Phone number is required" }
-                  : undefined,
-            }}
-          >
+          <form.Field name="phone">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -171,13 +162,7 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
             }}
           </form.Field>
 
-          <form.Field
-            name="city"
-            validators={{
-              onChange: ({ value }) =>
-                !value.trim() ? { message: "City is required" } : undefined,
-            }}
-          >
+          <form.Field name="city">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -201,13 +186,7 @@ export function UpdateProfileForm({ user }: { user: UserData }) {
             }}
           </form.Field>
 
-          <form.Field
-            name="address"
-            validators={{
-              onChange: ({ value }) =>
-                !value.trim() ? { message: "Address is required" } : undefined,
-            }}
-          >
+          <form.Field name="address">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;

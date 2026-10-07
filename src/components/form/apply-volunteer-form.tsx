@@ -3,6 +3,7 @@
 import { useForm } from "@tanstack/react-form";
 import { Sparkles, Type, X } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,16 +14,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { applyVolunteer } from "@/app/(dashboard)/citizen/_Action/applyVolunteer";
-import { toast } from "../ui/toast";
+import { volunteerSchema } from "@/validation/applyvolunteer.schema";
+
+const MAX_SKILLS = 10;
+const MAX_SKILL_LENGTH = 30;
 
 export default function VolunteerApplyForm() {
   const [skillInput, setSkillInput] = useState("");
+  const [skillError, setSkillError] = useState<string | null>(null);
 
   const form = useForm({
     defaultValues: {
       bio: "",
       skills: [] as string[],
+    },
+    validators: {
+      onChange: volunteerSchema,
     },
 
     onSubmit: async ({ value }) => {
@@ -30,18 +37,7 @@ export default function VolunteerApplyForm() {
         bio: value.bio.trim(),
         skills: value.skills,
       };
-      const result = await applyVolunteer(volunteerData);
-      if (result.success) {
-        toast.add({
-          title: "You are successfully applied for volunteer.",
-          description: "PLease wait for admin approval.",
-        });
-      } else {
-        toast.add({
-          title: `${result.error}` || "Something went wrong",
-          description: "Plese apply again after some time",
-        });
-      }
+      console.log(volunteerData);
     },
   });
 
@@ -63,13 +59,7 @@ export default function VolunteerApplyForm() {
       >
         <FieldGroup>
           {/* BIO */}
-          <form.Field
-            name="bio"
-            validators={{
-              onChange: ({ value }) =>
-                !value.trim() ? { message: "Bio is required" } : undefined,
-            }}
-          >
+          <form.Field name="bio">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -98,16 +88,7 @@ export default function VolunteerApplyForm() {
           </form.Field>
 
           {/* SKILLS */}
-          <form.Field
-            name="skills"
-            mode="array"
-            validators={{
-              onChange: ({ value }) =>
-                value.length === 0
-                  ? { message: "Add at least one skill" }
-                  : undefined,
-            }}
-          >
+          <form.Field name="skills" mode="array">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -116,16 +97,32 @@ export default function VolunteerApplyForm() {
                 const skill = skillInput.trim();
                 if (!skill) return;
 
+                if (skill.length > MAX_SKILL_LENGTH) {
+                  setSkillError(
+                    `Each skill must be at most ${MAX_SKILL_LENGTH} characters`,
+                  );
+                  return;
+                }
+                if (field.state.value.length >= MAX_SKILLS) {
+                  setSkillError(`You can add up to ${MAX_SKILLS} skills`);
+                  return;
+                }
+
                 const exists = field.state.value.some(
                   (s) => s.toLowerCase() === skill.toLowerCase(),
                 );
-                if (!exists) field.pushValue(skill);
+                if (exists) {
+                  setSkillError("This skill is already added");
+                  return;
+                }
 
+                setSkillError(null);
+                field.pushValue(skill);
                 setSkillInput("");
               };
 
               return (
-                <Field data-invalid={isInvalid}>
+                <Field data-invalid={isInvalid || !!skillError}>
                   <FieldLabel htmlFor={field.name}>Skills</FieldLabel>
 
                   <div className="flex gap-2">
@@ -138,14 +135,17 @@ export default function VolunteerApplyForm() {
                         placeholder="Type a skill and press Enter"
                         value={skillInput}
                         onBlur={field.handleBlur}
-                        onChange={(e) => setSkillInput(e.target.value)}
+                        onChange={(e) => {
+                          setSkillInput(e.target.value);
+                          if (skillError) setSkillError(null);
+                        }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
-                            e.preventDefault(); // ফর্ম submit হওয়া আটকায়
+                            e.preventDefault();
                             addSkill();
                           }
                         }}
-                        aria-invalid={isInvalid}
+                        aria-invalid={isInvalid || !!skillError}
                         className="pl-9"
                         autoComplete="off"
                       />
@@ -177,14 +177,25 @@ export default function VolunteerApplyForm() {
                     </div>
                   )}
 
+                  {skillError && (
+                    <FieldError errors={[{ message: skillError }]} />
+                  )}
+
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
           </form.Field>
         </FieldGroup>
+
         <div className="mt-5 flex w-full justify-center">
-          <Button type="submit">Submit</Button>
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
+            )}
+          </form.Subscribe>
         </div>
       </form>
     </div>

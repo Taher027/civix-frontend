@@ -3,6 +3,7 @@
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { VerifyOtp } from "@/app/(public)/(auth)/_Action/VerifyOtp";
 import { Button } from "../ui/button";
 import {
@@ -16,6 +17,7 @@ import {
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { toast } from "../ui/toast";
+import { verifySchema } from "@/validation/verifyAccount.schema";
 
 const RESEND_COOLDOWN = 120;
 
@@ -24,10 +26,12 @@ export default function VerifyAccountForm() {
   const router = useRouter();
 
   const [otp, setOtp] = useState("");
-  const [isInvalid, setIsInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendTimer, setResendTimer] = useState(RESEND_COOLDOWN);
 
   const email = searchParams.get("email") || "";
+  const isInvalid = !!errorMessage;
 
   useEffect(() => {
     if (!email) {
@@ -48,28 +52,34 @@ export default function VerifyAccountForm() {
   }, [resendTimer]);
 
   const handleOTP = async () => {
-    if (otp.length !== 6) {
-      setIsInvalid(true);
+    const parsed = verifySchema.safeParse({ email, otp });
+
+    if (!parsed.success) {
+      setErrorMessage(parsed.error.issues[0].message);
       return;
     }
 
-    const verifyData = {
-      email,
-      otp,
-    };
-    const verifyResult = await VerifyOtp(verifyData);
-    if (verifyResult.success) {
-      toast.add({
-        title: "Email verification successfull",
-        description: "Please login to visit your profile.",
-      });
-      router.push("/login");
-    }
-    if (!verifyResult.success) {
+    setErrorMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      const verifyResult = await VerifyOtp(parsed.data);
+
+      if (verifyResult.success) {
+        toast.add({
+          title: "Email verification successfull",
+          description: "Please login to visit your profile.",
+        });
+        router.push("/login");
+        return;
+      }
+
       toast.add({
         title: verifyResult.error,
         description: verifyResult.message || "something went wrong",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,6 +99,7 @@ export default function VerifyAccountForm() {
             e.stopPropagation();
             handleOTP();
           }}
+          noValidate
         >
           <Field data-invalid={isInvalid}>
             <FieldLabel htmlFor="otp">OTP</FieldLabel>
@@ -96,8 +107,8 @@ export default function VerifyAccountForm() {
               maxLength={6}
               onChange={(value) => {
                 setOtp(value);
-                if (isInvalid) {
-                  setIsInvalid(false);
+                if (errorMessage) {
+                  setErrorMessage(null);
                 }
               }}
               value={otp}
@@ -105,29 +116,32 @@ export default function VerifyAccountForm() {
               name="otp"
               id="otp"
               pattern={REGEXP_ONLY_DIGITS}
+              aria-invalid={isInvalid}
             >
               <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
+                <InputOTPSlot index={0} aria-invalid={isInvalid} />
+                <InputOTPSlot index={1} aria-invalid={isInvalid} />
+                <InputOTPSlot index={2} aria-invalid={isInvalid} />
+                <InputOTPSlot index={3} aria-invalid={isInvalid} />
+                <InputOTPSlot index={4} aria-invalid={isInvalid} />
+                <InputOTPSlot index={5} aria-invalid={isInvalid} />
               </InputOTPGroup>
             </InputOTP>
-            {isInvalid && (
-              <FieldError
-                errors={[{ message: "Invalid Code. Please try again" }]}
-              />
-            )}
-            <FieldDescription>Resend in {resendTimer}</FieldDescription>
+            {isInvalid && <FieldError errors={[{ message: errorMessage }]} />}
+            <FieldDescription>
+              {resendTimer > 0
+                ? `Resend in ${resendTimer}s`
+                : "You can resend the code now"}
+            </FieldDescription>
           </Field>
         </form>
       </CardContent>
-      <CardFooter>
-        <Button disabled={resendTimer > 0}>Resend</Button>
-        <Button type="submit" form="otp-form">
-          Submit
+      <CardFooter className="gap-2">
+        <Button type="button" variant="outline" disabled={resendTimer > 0}>
+          Resend
+        </Button>
+        <Button type="submit" form="otp-form" disabled={isSubmitting}>
+          {isSubmitting ? "Verifying..." : "Submit"}
         </Button>
       </CardFooter>
     </Card>

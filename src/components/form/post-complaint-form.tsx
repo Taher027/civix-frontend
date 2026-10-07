@@ -10,7 +10,9 @@ import {
   Tag,
   Text,
   Type,
+  X,
 } from "lucide-react";
+import { z } from "zod";
 
 import { postComplaintAction } from "@/app/(dashboard)/citizen/_Action/PostComplaint";
 import { Button } from "@/components/ui/button";
@@ -24,8 +26,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { Category } from "@/types/category.type";
-
+import { complaintSchema } from "@/validation/postComplaint.schema";
 const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const;
+
+const MAX_FILES = 5;
+const MAX_FILE_SIZE_MB = 5;
+const MAX_DESCRIPTION = 1000;
 export default function PostComplaintForm({
   categories,
 }: {
@@ -40,19 +46,22 @@ export default function PostComplaintForm({
       city: "",
       location: "",
       mapURL: "",
-      priority: "medium",
+      priority: "MEDIUM" as string,
       complaintImage: [] as File[],
+    },
+    validators: {
+      onChange: complaintSchema,
     },
 
     onSubmit: async ({ value }) => {
       const complaintData = {
-        title: value.title,
-        short_description: value.short_description,
-        description: value.description,
+        title: value.title.trim(),
+        short_description: value.short_description.trim(),
+        description: value.description.trim(),
         categoryId: value.category,
-        city: value.city,
-        location: value.location,
-        mapURL: value.mapURL ? value.mapURL : undefined,
+        city: value.city.trim(),
+        location: value.location.trim(),
+        mapURL: value.mapURL.trim() ? value.mapURL.trim() : undefined,
         priority: value.priority,
       };
       const complaintImage = value.complaintImage;
@@ -63,6 +72,7 @@ export default function PostComplaintForm({
         formData.append("complaintImage", file);
       }
       const result = await postComplaintAction(formData);
+      console.log(result);
     },
   });
 
@@ -233,8 +243,14 @@ export default function PostComplaintForm({
                     <FieldDescription>
                       Helps the authorities understand the problem faster.
                     </FieldDescription>
-                    <span className="text-xs text-muted-foreground">
-                      {field.state.value.length}/1000
+                    <span
+                      className={
+                        field.state.value.length > MAX_DESCRIPTION
+                          ? "text-xs text-destructive"
+                          : "text-xs text-muted-foreground"
+                      }
+                    >
+                      {field.state.value.length}/{MAX_DESCRIPTION}
                     </span>
                   </div>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -346,9 +362,9 @@ export default function PostComplaintForm({
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor="additional-file-field">
-                    Additional Files
+                    Additional Files{" "}
                     <span className="font-normal text-muted-foreground">
-                      (optional)
+                      (optional, up to {MAX_FILES} images)
                     </span>
                   </FieldLabel>
                   <div className="flex flex-wrap items-center gap-3">
@@ -358,12 +374,13 @@ export default function PostComplaintForm({
                       nativeButton={false}
                       variant="outline"
                     >
-                      <Plus size="4" />
+                      <Plus className="size-4" />
                       Add Files
                     </Button>
                     <input
                       id="additional-file-field"
                       type="file"
+                      accept="image/*"
                       multiple
                       className="sr-only"
                       name={field.name}
@@ -375,10 +392,40 @@ export default function PostComplaintForm({
                         }
 
                         field.handleChange([...files, ...incoming]);
+                        field.handleBlur(); // সাথে সাথে error দেখানোর জন্য
                         e.target.value = "";
                       }}
                     />
                   </div>
+
+                  {/* নির্বাচিত ফাইলের তালিকা */}
+                  {files.length > 0 && (
+                    <ul className="flex flex-col gap-2 pt-1">
+                      {files.map((file, i) => (
+                        <li
+                          key={`${file.name}-${file.size}-${i}`}
+                          className="flex items-center justify-between gap-2 rounded-md border px-3 py-1.5 text-sm"
+                        >
+                          <span className="min-w-0 truncate">{file.name}</span>
+                          <span className="shrink-0 text-xs text-muted-foreground">
+                            {(file.size / (1024 * 1024)).toFixed(2)} MB
+                          </span>
+                          <button
+                            type="button"
+                            aria-label={`Remove ${file.name}`}
+                            onClick={() =>
+                              field.handleChange(
+                                files.filter((_, idx) => idx !== i),
+                              )
+                            }
+                            className="shrink-0 rounded-full p-0.5 hover:bg-muted"
+                          >
+                            <X className="size-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -386,8 +433,14 @@ export default function PostComplaintForm({
             }}
           </form.Field>
         </FieldGroup>
-        <div className="flex justify-end w-full mt-5">
-          <Button type="submit">Submit</Button>
+        <div className="mt-5 flex w-full justify-end">
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
+            )}
+          </form.Subscribe>
         </div>
       </form>
     </div>
