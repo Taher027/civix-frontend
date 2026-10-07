@@ -13,7 +13,6 @@ export default async function MyComplaints() {
   }
   complaints = Responsecomplaints.data;
   const userRole = me.role.toLowerCase();
-  console.log(me);
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">

@@ -14,3 +14,22 @@ export type RegisterResult =
       success: false;
       error: string;
     };
+export type UserProfile = {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  role: string;
+  status: string;
+  phone: string;
+  address: string;
+  city: string;
+  avatar: string | null;
+  avatarPublicId?: string | null;
+  authProvider: string;
+  googleId?: string | null;
+  isDeleted: boolean;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};

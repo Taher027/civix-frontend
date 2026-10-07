@@ -14,36 +14,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-
-export type UserProfile = {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
-  role: string;
-  status: string;
-  phone: string;
-  address: string;
-  city: string;
-  avatar: string | null;
-  avatarPublicId?: string | null;
-  authProvider: string;
-  googleId?: string | null;
-  isDeleted: boolean;
-  deletedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
+import { UserProfile } from "@/types/auth.type";
+import { uploadProfileImage } from "@/services/UploadProfileImages";
 
 type Props = {
   user: UserProfile;
-  /** Backend upload endpoint (PATCH/POST). Change to match your API. */
-  uploadUrl?: string;
-  /** FormData field name the backend expects. */
-  fieldName?: string;
-  method?: "POST" | "PATCH" | "PUT";
-  /** Called with the updated avatar url after a successful upload. */
-  onUploaded?: (avatarUrl: string | null) => void;
 };
 
 const MAX_SIZE_MB = 5;
@@ -81,13 +56,7 @@ function InfoRow({
   );
 }
 
-export default function ProfileComponent({
-  user,
-  uploadUrl = "/api/users/avatar",
-  fieldName = "file",
-  method = "PATCH",
-  onUploaded,
-}: Props) {
+export default function ProfileComponent({ user }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [avatar, setAvatar] = useState<string | null>(user.avatar);
   const [file, setFile] = useState<File | null>(null);
@@ -110,14 +79,11 @@ export default function ProfileComponent({
       setError("Please choose an image file.");
       return;
     }
-    if (selected.size > MAX_SIZE_MB * 1024 * 1024) {
-      setError(`Image must be smaller than ${MAX_SIZE_MB} MB.`);
-      return;
-    }
 
     setError(null);
     setFile(selected);
     setPreview(URL.createObjectURL(selected));
+    console.log("click");
   };
 
   const handleCancel = () => {
@@ -134,25 +100,17 @@ export default function ProfileComponent({
 
     try {
       const formData = new FormData();
-      formData.append(fieldName, file);
+      formData.append("profileImage", file);
 
-      const res = await fetch(uploadUrl, {
-        method,
-        body: formData, // don't set Content-Type; the browser adds the boundary
-        credentials: "include",
-      });
+      const result = await uploadProfileImage(formData);
 
-      if (!res.ok) {
-        const body = await res.json().catch(() => null);
-        throw new Error(body?.message || "Upload failed. Please try again.");
+      if (!result.success) {
+        throw new Error(result.error);
       }
 
-      const body = await res.json().catch(() => null);
-      // Adjust to your response shape
-      const newUrl: string | null = body?.data?.avatar ?? preview;
+      const newUrl: string | null = result.data?.avatar ?? preview;
 
       setAvatar(newUrl);
-      onUploaded?.(newUrl);
       handleCancel();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
