@@ -71,7 +71,6 @@ export default function VerifyAccountForm() {
         description: verifyResult.message || "something went wrong",
       });
     }
-    console.log(verifyData);
   };
 
   return (

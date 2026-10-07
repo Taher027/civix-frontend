@@ -18,7 +18,6 @@ export const loginAction = async (data: TData) => {
   );
 
   const result = await res.json();
-  console.log(Response);
 
   if (!result.success) {
     return { success: false, error: result.message || "Login failed" };

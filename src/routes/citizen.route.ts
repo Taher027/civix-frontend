@@ -2,29 +2,28 @@ const prefix = "/citizen";
 
 export const citizenRoutes = [
   {
-    title: "Bookings",
+    title: "Profile",
     items: [
       {
-        title: "Overview",
-        url: `${prefix}`,
+        title: "post Complaint",
+        url: `${prefix}/post-complaint`,
       },
       {
-        title: "Donate History",
-        url: `${prefix}`,
+        title: "My Complaints",
+        url: `${prefix}/my-complaints`,
+      },
+      {
+        title: "My Donation",
+        url: `${prefix}/my-donation`,
       },
     ],
   },
   {
-    title: "App Settings",
+    title: "My Information",
     items: [
       {
-        title: "Routing",
-        url: "#",
-      },
-      {
-        title: "Data Fetching",
-        url: "#",
-        isActive: true,
+        title: "Profile Details",
+        url: `${prefix}/profile-details`,
       },
     ],
   },

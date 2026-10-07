@@ -1,4 +1,3 @@
-"use server"
 export const VerifyOtp = async (payload: { email: string; otp: string }) => {
   try {
     const res = await fetch(

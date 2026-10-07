@@ -22,7 +22,7 @@ export default function LoginForm() {
 
   const form = useForm({
     defaultValues: {
-      email: "test@gamil.com",
+      email: "test@gmail.com",
       password: "123456",
     },
     onSubmit: async ({ value }) => {
