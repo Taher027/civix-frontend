@@ -36,6 +36,10 @@ export const volunteerRoutes = [
         title: "Profile Details",
         url: `${prefix}/profile-details`,
       },
+      {
+        title: "Update Profile",
+        url: `${prefix}/update-profile`,
+      },
     ],
   },
 ];

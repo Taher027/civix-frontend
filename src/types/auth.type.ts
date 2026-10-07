@@ -33,3 +33,9 @@ export type UserProfile = {
   createdAt: string;
   updatedAt: string;
 };
+export type UpdateProfileInput = {
+  name: string;
+  phone: string;
+  city: string;
+  address: string;
+};
