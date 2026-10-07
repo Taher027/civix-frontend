@@ -63,8 +63,6 @@ export default function PostComplaintForm({
         formData.append("complaintImage", file);
       }
       const result = await postComplaintAction(formData);
-      console.log(result);
-      console.log(value.category);
     },
   });
 

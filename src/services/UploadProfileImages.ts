@@ -19,7 +19,6 @@ export async function uploadProfileImage(formData: FormData) {
     method: "PATCH",
     body: formData,
   });
-  console.log(result);
   if (result.success) {
     revalidatePath("/profile");
   }

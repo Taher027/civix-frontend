@@ -83,7 +83,6 @@ export default function ProfileComponent({ user }: Props) {
     setError(null);
     setFile(selected);
     setPreview(URL.createObjectURL(selected));
-    console.log("click");
   };
 
   const handleCancel = () => {

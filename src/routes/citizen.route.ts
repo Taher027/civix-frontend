@@ -13,6 +13,10 @@ export const citizenRoutes = [
         url: `${prefix}/my-complaints`,
       },
       {
+        title: "Apply Vounteer",
+        url: `${prefix}/apply-volunteer`,
+      },
+      {
         title: "My Donation",
         url: `${prefix}/my-donation`,
       },
