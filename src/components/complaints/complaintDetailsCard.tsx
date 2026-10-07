@@ -145,9 +145,6 @@ export default function ComplaintDetailsCard({
           <Field name="Reported by">
             <span className="font-mono text-xs">{createdBy}</span>
           </Field>
-          <Field name="Complaint ID">
-            <span className="font-mono text-xs">{id}</span>
-          </Field>
         </dl>
 
         <ImageGrid title="Reported photos" images={initialImages} />

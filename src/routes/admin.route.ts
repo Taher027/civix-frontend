@@ -28,4 +28,14 @@ export const adminRoutes = [
       },
     ],
   },
+
+  {
+    title: "My Information",
+    items: [
+      {
+        title: "Profile Details",
+        url: `${prefix}/profile-details`,
+      },
+    ],
+  },
 ];
