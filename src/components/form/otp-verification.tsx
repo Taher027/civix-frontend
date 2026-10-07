@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { VerifyOtp } from "@/app/(public)/(auth)/_Action/VerifyOtp";
+import { verifySchema } from "@/validation/verifyAccount.schema";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -17,7 +18,6 @@ import {
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { toast } from "../ui/toast";
-import { verifySchema } from "@/validation/verifyAccount.schema";
 
 const RESEND_COOLDOWN = 120;
 

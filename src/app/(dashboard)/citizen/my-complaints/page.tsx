@@ -1,7 +1,7 @@
 import { ComplaintCard } from "@/components/dashboard/complaint/ComplaintCard";
 import type { Complaint } from "@/types/complaint.type";
-import { myComplaints } from "../_Action/myComplaits";
 import { getMe } from "../../_Action/getme";
+import { myComplaints } from "../_Action/myComplaits";
 
 export default async function MyComplaints() {
   const me = await getMe();

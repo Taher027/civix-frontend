@@ -5,26 +5,12 @@ export const volunteerRoutes = [
     title: "Bookings",
     items: [
       {
-        title: "Overview",
-        url: `${prefix}`,
+        title: "Complaints",
+        url: `${prefix}/complaints`,
       },
       {
         title: "Donate History",
         url: `${prefix}`,
-      },
-    ],
-  },
-  {
-    title: "App Settings",
-    items: [
-      {
-        title: "Routing",
-        url: "#",
-      },
-      {
-        title: "Data Fetching",
-        url: "#",
-        isActive: true,
       },
     ],
   },

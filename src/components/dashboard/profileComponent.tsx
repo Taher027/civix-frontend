@@ -1,7 +1,7 @@
 "use client";
 
+import { CalendarDays, Camera, Home, Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Camera, Mail, MapPin, Phone, Home, CalendarDays } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { UserProfile } from "@/types/auth.type";
 import { uploadProfileImage } from "@/services/UploadProfileImages";
+import type { UserProfile } from "@/types/auth.type";
 
 type Props = {
   user: UserProfile;

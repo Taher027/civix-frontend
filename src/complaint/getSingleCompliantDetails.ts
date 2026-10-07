@@ -1,5 +1,5 @@
-import { serverFetch } from "@/lib/serverFetch";
 import { success } from "zod";
+import { serverFetch } from "@/lib/serverFetch";
 
 export const complaintDetails = async (id: string) => {
   const result = await serverFetch(`/complaints/${id}`, {

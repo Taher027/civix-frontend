@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { loginAction } from "@/app/(public)/(auth)/_Action/AuthAction";
+import { loginSchema } from "@/validation/loginForm.schema";
 import { Button } from "../ui/button";
 import {
   Field,
@@ -16,7 +17,6 @@ import {
 } from "../ui/field";
 import { Input } from "../ui/input";
 import { toast } from "../ui/toast";
-import { loginSchema } from "@/validation/loginForm.schema";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);

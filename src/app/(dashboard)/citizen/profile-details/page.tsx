@@ -1,5 +1,5 @@
-import ProfileComponent from "@/components/dashboard/profileComponent";
 import React from "react";
+import ProfileComponent from "@/components/dashboard/profileComponent";
 import { getMe } from "../../_Action/getme";
 
 export default async function ProfileDetails() {

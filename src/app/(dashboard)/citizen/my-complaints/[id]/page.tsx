@@ -1,7 +1,7 @@
+import { redirect } from "next/navigation";
 import { getMe } from "@/app/(dashboard)/_Action/getme";
 import { complaintDetails } from "@/complaint/getSingleCompliantDetails";
 import ComplaintDetailsCard from "@/components/complaints/complaintDetailsCard";
-import { redirect } from "next/navigation";
 
 export default async function ComplaintDetails({
   params,

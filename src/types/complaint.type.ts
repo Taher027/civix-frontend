@@ -26,3 +26,24 @@ export type Complaint = {
   createdAt: string;
   resolvedAt: string | null;
 };
+
+export type ComplaintVolunteerStatus =
+  | "APPLIED"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "RESOLVED";
+
+export type ComplaintVolunteer = {
+  id: string;
+  complaintId: string;
+  volunteerId: string;
+  status: ComplaintVolunteerStatus;
+  message: string | null;
+  statusNote: string | null;
+  solutionImages: string[];
+  appliedAt: string;
+  acceptedAt: string | null;
+  resolvedAt: string | null;
+  updatedAt: string;
+  complaint?: Complaint;
+};

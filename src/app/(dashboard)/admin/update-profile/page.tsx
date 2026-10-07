@@ -1,6 +1,6 @@
+import React from "react";
 import ProfileComponent from "@/components/dashboard/profileComponent";
 import { UpdateProfileForm } from "@/components/form/updateProfileForm";
-import React from "react";
 import { getMe } from "../../_Action/getme";
 
 export default async function UpdateProfile() {

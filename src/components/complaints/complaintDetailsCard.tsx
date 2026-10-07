@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { Complaint } from "@/types/complaint.type";
+import type { Complaint } from "@/types/complaint.type";
 
 const priorityStyles: Record<string, string> = {
   LOW: "bg-green-100 text-green-800 border-green-200",
