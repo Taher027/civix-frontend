@@ -1,15 +1,22 @@
 "use server";
+
 import { serverFetch } from "@/lib/serverFetch";
+import type { AppliedComplaint } from "@/types/complaint.type";
 
-export async function getMyAppliedComplaints() {
-  const result = await serverFetch("/complaints/my-applied-complaints", {
-    method: "GET",
-    tags: ["applied-complaints"],
-  });
+export const getMyAppliedComplaints = async (
+  status?: string,
+): Promise<AppliedComplaint[]> => {
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
 
-  if (result.success) {
-    return result.data;
-  } else {
+  const result = await serverFetch<AppliedComplaint[]>(
+    `/complaints/my-applied-complaints${query}`,
+    { method: "GET", cache: "no-store" },
+  );
+
+  if (!result.success) {
+    console.error("getMyAppliedComplaints failed:", result.error);
     return [];
   }
-}
+
+  return result.data ?? [];
+};

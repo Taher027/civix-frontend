@@ -47,3 +47,16 @@ export type ComplaintVolunteer = {
   updatedAt: string;
   complaint?: Complaint;
 };
+export type AppliedComplaint = {
+  id: string;
+  complaintId: string;
+  volunteerId: string;
+  status: string;
+  message: string;
+  statusNote?: string | null;
+  solutionImages?: string[];
+  appliedAt: string;
+  acceptedAt?: string | null;
+  resolvedAt?: string | null;
+  updatedAt: string;
+};
