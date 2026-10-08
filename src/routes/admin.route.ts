@@ -5,8 +5,8 @@ export const adminRoutes = [
     title: "Bookings",
     items: [
       {
-        title: "Overview",
-        url: `${prefix}`,
+        title: "Volunteer Application",
+        url: `${prefix}/Volunteer-application`,
       },
       {
         title: "Donate History",
