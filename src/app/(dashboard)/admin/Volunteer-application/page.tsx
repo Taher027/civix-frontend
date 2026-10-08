@@ -1,6 +1,6 @@
 import VolunteerApplicationCard from "@/components/dashboard/admin/volunteerApplicationReviewCard";
-import { getVolunteerApplication } from "../_Action/getVolunteerApplication";
 import type { VolunteerApplication } from "@/types/volunteer.type";
+import { getVolunteerApplication } from "../_Action/getVolunteerApplication";
 
 export default async function VolunteerApplicationsPage({
   searchParams,
