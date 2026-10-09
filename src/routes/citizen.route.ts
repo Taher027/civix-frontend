@@ -17,6 +17,10 @@ export const citizenRoutes = [
         url: `${prefix}/apply-volunteer`,
       },
       {
+        title: "Donate",
+        url: `${prefix}/donate`,
+      },
+      {
         title: "My Donation",
         url: `${prefix}/my-donation`,
       },

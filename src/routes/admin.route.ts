@@ -12,10 +12,6 @@ export const adminRoutes = [
         title: "Volunteer Application",
         url: `${prefix}/Volunteer-application`,
       },
-      {
-        title: "Donate History",
-        url: `${prefix}`,
-      },
     ],
   },
 

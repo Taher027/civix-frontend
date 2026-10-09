@@ -21,7 +21,11 @@ export const volunteerRoutes = [
         url: `${prefix}/my-resolved-complaints`,
       },
       {
-        title: "Donate History",
+        title: "Donate",
+        url: `${prefix}/donate`,
+      },
+      {
+        title: "My Donation",
         url: `${prefix}`,
       },
     ],
