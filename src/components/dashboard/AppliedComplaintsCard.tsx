@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import AppliedForResolvedComplaint from "./AppliedForResolvedComplaint";
 import {
   Card,
   CardContent,
@@ -11,6 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { ComplaintVolunteer } from "@/types/complaint.type";
+import AppliedForResolvedComplaint from "./AppliedForResolvedComplaint";
 
 export type AppliedComplaint = {
   id: string;
