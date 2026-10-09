@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -63,16 +64,18 @@ function ImageGrid({ title, images }: { title: string; images: string[] }) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {images.map((src, i) => (
           <a
-            key={src + i}
+            key={src}
             href={src}
             target="_blank"
             rel="noopener noreferrer"
             className="block overflow-hidden rounded-lg border"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={src}
               alt={`${title} ${i + 1}`}
+              width={500}
+              height={500}
               className="aspect-square w-full object-cover transition-transform hover:scale-105"
             />
           </a>
@@ -87,7 +90,7 @@ export default function ComplaintDetailsCard({
   user,
 }: {
   complaint: Complaint;
-  user: string;
+  user?: string;
 }) {
   const {
     id,
@@ -162,12 +165,14 @@ export default function ComplaintDetailsCard({
           View on map
         </a>
 
-        <Link
-          href={`/${user}/my-complaints/${id}/edit-complaint`}
-          className={buttonVariants({ variant: "default" })}
-        >
-          Edit
-        </Link>
+        {user && (
+          <Link
+            href={`/${user}/my-complaints/${id}/edit-complaint`}
+            className={buttonVariants({ variant: "default" })}
+          >
+            Edit
+          </Link>
+        )}
       </CardFooter>
     </Card>
   );

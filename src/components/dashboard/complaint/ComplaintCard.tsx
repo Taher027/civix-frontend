@@ -47,7 +47,6 @@ export function ComplaintCard({
     mapURL,
     priority,
     status,
-    upvotes,
     initialImages,
     resolvedImages,
     createdAt,

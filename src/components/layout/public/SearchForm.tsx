@@ -11,7 +11,11 @@ export default function SearchForm() {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const term = value.trim();
-    router.push(term ? `/?searchTerm=${encodeURIComponent(term)}` : "/");
+    router.push(
+      term
+        ? `/complaints?searchTerm=${encodeURIComponent(term)}`
+        : "/complaints",
+    );
     setValue("");
   };
 

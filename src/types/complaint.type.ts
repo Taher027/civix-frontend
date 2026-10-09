@@ -60,3 +60,14 @@ export type Complaint = {
   resolvedAt: string | null;
   complaintVolunteers?: ComplaintVolunteer[];
 };
+export type PaginationMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export type PaginatedComplaints = {
+  data: Complaint[];
+  meta: PaginationMeta;
+};

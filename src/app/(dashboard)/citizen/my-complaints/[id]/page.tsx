@@ -1,24 +1,25 @@
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getMe } from "@/app/(dashboard)/_Action/getme";
-import { complaintDetails } from "@/complaint/getSingleCompliantDetails";
-import ComplaintDetailsCard from "@/components/complaints/complaintDetailsCard";
+import ComplaintDetailsCard from "@/components/complaints/complaintsDetailsView";
+import { getSingleComplaint } from "@/services/getSingleComplaintDetails";
 
 export default async function ComplaintDetails({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const user = await getMe();
   const { id } = await params;
-  const result = await complaintDetails(id);
-  if (!result.success) {
-    return "NO Data Found";
-  }
-  const userRole = user?.role.toLowerCase();
+  const [user, result] = await Promise.all([getMe(), getSingleComplaint(id)]);
+
+  if (!result.success) notFound();
+
+  const userRole: string | undefined = user
+    ? user.role?.toLowerCase()
+    : undefined;
 
   return (
-    <div>
-      <ComplaintDetailsCard complaint={result?.data} user={userRole} />
+    <div className="mx-auto max-w-3xl p-4 md:p-6">
+      <ComplaintDetailsCard complaint={result.data} user={userRole} />
     </div>
   );
 }

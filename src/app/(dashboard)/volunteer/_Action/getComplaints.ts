@@ -1,6 +1,8 @@
+// getComplaints.ts: prothom line "use server" MUCHE dao
 import { serverFetch } from "@/lib/serverFetch";
 
 type ComplaintParams = Record<string, string | number | undefined>;
+
 export async function getComplaints(params: ComplaintParams = {}) {
   const query = new URLSearchParams();
 
@@ -14,9 +16,5 @@ export async function getComplaints(params: ComplaintParams = {}) {
   const endpoint = `/complaints${queryString ? `?${queryString}` : ""}`;
   console.log("getComplaints:", endpoint);
 
-  const result = await serverFetch(endpoint, {
-    method: "GET",
-    tags: ["complaints"],
-  });
-  return result;
+  return serverFetch(endpoint, { method: "GET", cache: "no-store" });
 }

@@ -1,7 +1,7 @@
-import { complaintDetails } from "@/complaint/getSingleCompliantDetails";
 import AppliedComplaintCard, {
   type ComplaintSummary,
 } from "@/components/dashboard/AppliedComplaintsCard";
+import { getSingleComplaint } from "@/services/getSingleComplaintDetails";
 import type { ComplaintVolunteer } from "@/types/complaint.type";
 import { getMyAppliedComplaints } from "../_Action/getMyAppliedComplaints";
 
@@ -29,7 +29,7 @@ export default async function AcceptedComponent() {
     appliedComplaints.map(async (item) => {
       try {
         return unwrap<ComplaintSummary>(
-          await complaintDetails(item.complaintId),
+          await getSingleComplaint(item.complaintId),
         );
       } catch {
         return null;
