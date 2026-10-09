@@ -16,10 +16,11 @@ const dashboardRoute = {
 export default async function Header() {
   const user = await getMe();
   const role = user?.role as keyof typeof dashboardRoute | undefined;
-
+  const userRole = role?.toLocaleLowerCase();
   const routes = [
     { name: "Complaints", url: "/complaints" },
     { name: "About us", url: "/about-us" },
+    { name: "Donate Us", url: `/${userRole}/donate` },
     ...(role ? [{ name: "Dashboard", url: dashboardRoute[role] }] : []),
   ];
 

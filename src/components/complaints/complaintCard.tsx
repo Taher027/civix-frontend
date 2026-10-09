@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Complaint } from "@/types/complaint.type";
+import UpvoteButton from "./UpvoteBUtton";
 
 type Props = {
   complaint: Complaint;
@@ -28,7 +29,6 @@ export default function ComplaintCard({ complaint: c }: Props) {
             />
           </div>
         )}
-
         <CardHeader className="gap-2">
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline">{c.status.replace("_", " ")}</Badge>
@@ -42,14 +42,13 @@ export default function ComplaintCard({ complaint: c }: Props) {
             {[c.location, c.city].filter(Boolean).join(", ")}
           </p>
         </CardHeader>
-
         <CardContent className="space-y-3">
           <p className="line-clamp-3 text-sm text-muted-foreground">
             {c.short_description ?? c.description}
           </p>
-
           <div className="flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
-            <span>{c.upvotes} upvotes</span>
+            <UpvoteButton complaintId={c.id} initialUpvotes={c.upvotes} />
+
             <span>
               {new Date(c.createdAt).toLocaleDateString("en-GB", {
                 day: "numeric",

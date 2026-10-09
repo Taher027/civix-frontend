@@ -145,9 +145,6 @@ export default function ComplaintDetailsCard({
           <Field name="Resolved on">
             {resolvedAt ? formatDate(resolvedAt) : "Not resolved yet"}
           </Field>
-          <Field name="Reported by">
-            <span className="font-mono text-xs">{createdBy}</span>
-          </Field>
         </dl>
 
         <ImageGrid title="Reported photos" images={initialImages} />

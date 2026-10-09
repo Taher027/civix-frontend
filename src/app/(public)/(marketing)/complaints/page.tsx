@@ -21,6 +21,7 @@ export default async function Complaints({
     page: currentPage,
     limit: PAGE_SIZE,
   });
+  console.log(result);
 
   if (!result.success) {
     return (
