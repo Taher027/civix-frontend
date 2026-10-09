@@ -18,20 +18,6 @@ export const adminRoutes = [
       },
     ],
   },
-  {
-    title: "App Settings",
-    items: [
-      {
-        title: "Routing",
-        url: "#",
-      },
-      {
-        title: "Data Fetching",
-        url: "#",
-        isActive: true,
-      },
-    ],
-  },
 
   {
     title: "My Information",

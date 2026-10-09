@@ -1,4 +1,3 @@
-import { success } from "zod";
 import { serverFetch } from "@/lib/serverFetch";
 
 export const complaintDetails = async (id: string) => {

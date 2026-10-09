@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { acceptVolunteer } from "@/app/(dashboard)/admin/_Action/acceptVolunteer";
 import { deleteComplaint } from "@/app/(dashboard)/admin/_Action/deleteComplaint";
+import { getComplaintApplications } from "@/app/(dashboard)/admin/_Action/getComplaintApplication";
 import { resolveComplaint } from "@/app/(dashboard)/admin/_Action/resolveComplaint";
 import {
   AlertDialog,
@@ -39,7 +40,6 @@ import type {
   AdminComplaint,
   ComplaintStatus,
 } from "@/types/adminComplaint.type";
-import { getComplaintApplications } from "@/app/(dashboard)/admin/_Action/getComplaintApplication";
 
 type ApplicationStatus =
   | "APPLIED"
