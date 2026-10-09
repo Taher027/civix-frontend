@@ -1,8 +1,6 @@
-"use server";
 import { serverFetch } from "@/lib/serverFetch";
 
 type ComplaintParams = Record<string, string | number | undefined>;
-
 export async function getComplaints(params: ComplaintParams = {}) {
   const query = new URLSearchParams();
 
@@ -13,9 +11,12 @@ export async function getComplaints(params: ComplaintParams = {}) {
   }
 
   const queryString = query.toString();
+  const endpoint = `/complaints${queryString ? `?${queryString}` : ""}`;
+  console.log("getComplaints:", endpoint);
 
-  return serverFetch(`/complaints${queryString ? `?${queryString}` : ""}`, {
+  const result = await serverFetch(endpoint, {
     method: "GET",
     tags: ["complaints"],
   });
+  return result;
 }
