@@ -12,6 +12,10 @@ export const adminRoutes = [
         title: "Volunteer Application",
         url: `${prefix}/Volunteer-application`,
       },
+      {
+        title: "Review Submit",
+        url: `${prefix}/review-submit`,
+      },
     ],
   },
 

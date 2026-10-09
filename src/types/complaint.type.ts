@@ -8,6 +8,39 @@ export type IPostComplaint = {
   initialImages: string[];
   priority: string;
 };
+
+export type ComplaintVolunteerStatus =
+  | "APPLIED"
+  | "ACCEPTED"
+  | "SUBMITTED"
+  | "RESOLVED"
+  | "REJECTED";
+export type ComplaintVolunteer = {
+  id: string;
+  complaintId: string;
+  volunteerId: string;
+  status: ComplaintVolunteerStatus;
+  message: string | null;
+  statusNote?: string | null;
+  solutionImages?: string[];
+  appliedAt: string;
+  acceptedAt?: string | null;
+  resolvedAt?: string | null;
+  updatedAt: string;
+};
+export type AppliedComplaint = {
+  id: string;
+  complaintId: string;
+  volunteerId: string;
+  status: string;
+  message: string;
+  statusNote?: string | null;
+  solutionImages?: string[];
+  appliedAt: string;
+  acceptedAt?: string | null;
+  resolvedAt?: string | null;
+  updatedAt: string;
+};
 export type Complaint = {
   id: string;
   title: string;
@@ -25,38 +58,5 @@ export type Complaint = {
   resolvedImages: string[];
   createdAt: string;
   resolvedAt: string | null;
-};
-
-export type ComplaintVolunteerStatus =
-  | "APPLIED"
-  | "ACCEPTED"
-  | "REJECTED"
-  | "RESOLVED";
-
-export type ComplaintVolunteer = {
-  id: string;
-  complaintId: string;
-  volunteerId: string;
-  status: ComplaintVolunteerStatus;
-  message: string | null;
-  statusNote: string | null;
-  solutionImages: string[];
-  appliedAt: string;
-  acceptedAt: string | null;
-  resolvedAt: string | null;
-  updatedAt: string;
-  complaint?: Complaint;
-};
-export type AppliedComplaint = {
-  id: string;
-  complaintId: string;
-  volunteerId: string;
-  status: string;
-  message: string;
-  statusNote?: string | null;
-  solutionImages?: string[];
-  appliedAt: string;
-  acceptedAt?: string | null;
-  resolvedAt?: string | null;
-  updatedAt: string;
+  complaintVolunteers?: ComplaintVolunteer[];
 };

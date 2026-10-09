@@ -9,7 +9,7 @@ export async function resolveComplaint(
   return serverFetch(
     `/volunteer/complaints/${complaintId}/resolve/${volunteerId}`,
     {
-      method: "PATCH", // backend e PUT/POST hole bodlao
+      method: "PATCH",
     },
   );
 }
