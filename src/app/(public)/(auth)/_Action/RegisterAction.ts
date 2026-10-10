@@ -32,8 +32,6 @@ export const registerAction = async (
       error: result.message || "Registration failed.",
     };
   } catch (error) {
-    console.error("registerAction error:", error);
-
     return {
       success: false,
       error: "Something went wrong. Please try again.",

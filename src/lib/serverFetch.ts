@@ -50,7 +50,7 @@ export async function serverFetch<T = any>(
     return { success: true, data: result.data, message: result.message };
   } catch (error) {
     unstable_rethrow(error);
-    console.error(`serverFetch error [${endpoint}]:`, error);
+
     return { success: false, error: "Something went wrong. Please try again." };
   }
 }

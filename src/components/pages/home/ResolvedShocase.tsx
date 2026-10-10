@@ -13,7 +13,6 @@ export default async function ResolvedShowcase() {
 
   const { data } = result.data as PaginatedComplaints;
 
-  // Shudhu jegulo-te before ar after duita photo-i ache
   const complaints = (data ?? []).flatMap((c) => {
     const before = c.initialImages?.[0];
     const after = c.resolvedImages?.[0];

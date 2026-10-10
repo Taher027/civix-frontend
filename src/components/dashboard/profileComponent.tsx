@@ -21,8 +21,6 @@ type Props = {
   user: UserProfile;
 };
 
-const MAX_SIZE_MB = 5;
-
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",

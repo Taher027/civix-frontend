@@ -25,7 +25,6 @@ export const donate = async (amount: number) => {
     d?.bkashURL ?? d?.paymentUrl ?? d?.paymentURL ?? d?.callbackURL ?? d?.url;
 
   if (!url) {
-    console.error("donate: payment url not found in response", d);
     return { success: false as const, error: "Payment URL not found." };
   }
 

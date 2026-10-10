@@ -15,7 +15,7 @@ const getStarted = [
 export default async function Footer() {
   const year = new Date().getFullYear();
   const me = await getMe();
-  const userRole = me.role.toLowerCase();
+  const userRole = me?.role?.toLowerCase();
 
   return (
     <footer className="border-t bg-muted/40">

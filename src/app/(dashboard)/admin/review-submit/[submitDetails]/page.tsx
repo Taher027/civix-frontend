@@ -16,7 +16,6 @@ export default async function SubmitDetailsPage({
   const res = await getSingleComplaint(id);
 
   if (!res.success) {
-    console.error("single complaint failed:", res.error);
     notFound();
   }
 

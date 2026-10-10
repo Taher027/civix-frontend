@@ -37,7 +37,7 @@ export default function LoginForm() {
       };
 
       const response = await loginAction(data);
-      console.log(response);
+
       if (response.success) {
         toast.add({
           title: "Login Success",

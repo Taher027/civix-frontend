@@ -11,7 +11,6 @@ export const getMyDonations = async (): Promise<Donation[]> => {
   });
 
   if (!result.success) {
-    console.error("getMyDonations failed:", result.error);
     return [];
   }
 

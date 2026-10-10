@@ -12,7 +12,7 @@ export default async function page() {
   const me = await getMe();
   const result = await allCategories();
   const categories = result.success ? result.data : [];
-  const userRole = me.role.toLowerCase();
+  const userRole = me?.role?.toLowerCase();
   return (
     <div>
       <main>

@@ -14,7 +14,6 @@ export const getMyAppliedComplaints = async (
   );
 
   if (!result.success) {
-    console.error("getMyAppliedComplaints failed:", result.error);
     return [];
   }
 

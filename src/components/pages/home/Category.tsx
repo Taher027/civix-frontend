@@ -26,14 +26,12 @@ const iconRules: { keywords: string[]; icon: LucideIcon }[] = [
   { keywords: ["park", "tree", "environment", "garden"], icon: TreePine },
   { keywords: ["building", "construction", "housing"], icon: Building2 },
 ];
-
-function getIcon(title: string): LucideIcon {
-  const t = title.toLowerCase();
+function getIcon(title?: string): LucideIcon {
+  const t = (title ?? "").toLowerCase();
   return (
     iconRules.find((r) => r.keywords.some((k) => t.includes(k)))?.icon ?? Shapes
   );
 }
-
 export default function Categories({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
 

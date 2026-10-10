@@ -24,8 +24,6 @@ export const VerifyOtp = async (payload: { email: string; otp: string }) => {
       error: result.message || "verification  failed.",
     };
   } catch (error) {
-    console.error("registerAction error:", error);
-
     return {
       success: false,
       error: "Something went wrong. Please try again.",

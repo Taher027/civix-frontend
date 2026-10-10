@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { volunteerSchema } from "@/validation/applyvolunteer.schema";
+import { applyVolunteer } from "@/app/(dashboard)/citizen/_Action/applyVolunteer";
+import { toast } from "../ui/toast";
 
 const MAX_SKILLS = 10;
 const MAX_SKILL_LENGTH = 30;
@@ -37,7 +39,12 @@ export default function VolunteerApplyForm() {
         bio: value.bio.trim(),
         skills: value.skills,
       };
-      console.log(volunteerData);
+      const result = await applyVolunteer(volunteerData);
+      if (result.success) {
+        toast.add({
+          title: `${result.message} || "Apply successFUll"`,
+        });
+      }
     },
   });
 

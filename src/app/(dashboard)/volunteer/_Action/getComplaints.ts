@@ -14,7 +14,6 @@ export async function getComplaints(params: ComplaintParams = {}) {
 
   const queryString = query.toString();
   const endpoint = `/complaints${queryString ? `?${queryString}` : ""}`;
-  console.log("getComplaints:", endpoint);
 
   return serverFetch(endpoint, { method: "GET", cache: "no-store" });
 }

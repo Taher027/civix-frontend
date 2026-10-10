@@ -2,7 +2,7 @@
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 
-export default function HeroBanner({ userRole }: { userRole: string }) {
+export default function HeroBanner({ userRole }: { userRole?: string }) {
   return (
     <section className="relative overflow-hidden border-b bg-linear-to-br from-primary/10 via-background to-background">
       <div className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-primary/10 blur-3xl" />
