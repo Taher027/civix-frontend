@@ -132,3 +132,86 @@
     @apply font-sans;
   }
 }
+
+/* Civix Hero Animations */
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hero-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 60%;
+  }
+}
+
+@keyframes hero-notification {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-enter-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.hero-enter-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.hero-enter-delay-3 {
+  animation-delay: 0.45s;
+}
+
+.hero-float {
+  animation: hero-float 5s ease-in-out infinite;
+}
+
+.hero-notification {
+  animation: hero-notification 0.7s ease-out 0.5s both;
+}
+
+.hero-progress {
+  animation: hero-progress 1.5s ease-out 0.8s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter,
+  .hero-enter-delay-1,
+  .hero-enter-delay-2,
+  .hero-enter-delay-3,
+  .hero-float,
+  .hero-notification,
+  .hero-progress {
+    animation: none !important;
+  }
+}
