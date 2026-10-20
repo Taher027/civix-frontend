@@ -3,8 +3,15 @@
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
-export default function SearchForm() {
+export default function SearchForm({
+  className,
+  onSubmitted,
+}: {
+  className?: string;
+  onSubmitted?: () => void;
+}) {
   const router = useRouter();
   const [value, setValue] = useState("");
 
@@ -17,10 +24,11 @@ export default function SearchForm() {
         : "/complaints",
     );
     setValue("");
+    onSubmitted?.();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full max-w-xs">
+    <form onSubmit={handleSubmit} className={cn("relative w-full", className)}>
       <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       <input
         type="search"
@@ -28,7 +36,7 @@ export default function SearchForm() {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search complaints..."
         aria-label="Search complaints"
-        className="h-9 w-full rounded-md border bg-background pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/30"
+        className="h-9 w-full rounded-full border bg-muted/50 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:bg-background focus-visible:ring-2 focus-visible:ring-ring/30"
       />
     </form>
   );
